@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="email" id="email">
+    <input type="text" id="clave">
+    <button onclick="sendMessage()">Enviar</button>
+    <div id="messageArea">
+
+    </div>
+
+    <script th:inline="javascript">
+        let socket = new WebSocket("ws://localhost:8080/chat");
+
+        socket.onmessage = function (event) {
+            let messageArea = document.getElementById("messageArea");
+            messageArea.innerHTML += "<p>" + event.data + "</p>"
+        }
+
+        function sendMessage() {
+            let email = document.getElementById("email");
+            let clave = document.getElementById("clave");
+
+            let fullMessage = email.value + ": " + clave.value;
+            socket.send(fullMessage);
+            messageInput.value = "";
+        }
+    </script>
+</body>
+
+</html>
